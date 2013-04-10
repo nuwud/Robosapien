@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -39,7 +39,7 @@ namespace Com.Enterprisecoding.RobosapienKinect {
         private readonly Storyboard upperBody;
 
         #endregion
-
+        #pragma warning disable
         private SpeechSynthesizer speechSynthesizer;
 
         private KinectSensor kinectSensor;
@@ -131,11 +131,11 @@ namespace Com.Enterprisecoding.RobosapienKinect {
         private void roboManagerInstance_FollowUpChanged(object sender, EventArgs e)
         {
             if (RoboManager.Instance.FollowUp) {
-                appendLogEntry("İskelet takibi [AÇIK]");
+                appendLogEntry("skeletal tracking [ON]");
                 trackingStart.Begin();
             }
             else {
-                appendLogEntry("İskelet takibi [KAPALI]");
+                appendLogEntry("skeletal trackin [OFF]");
                 trackingStop.Begin();
             }
 
@@ -285,7 +285,7 @@ namespace Com.Enterprisecoding.RobosapienKinect {
         }
 
         private void InitializeKinectServices() {
-            appendLogEntry("Kinect [Bağlı]");
+            appendLogEntry("Kinect [Connected]");
 
             kinectSensor.SkeletonFrameReady += kinectSensor_SkeletonFrameReady;
 
@@ -309,7 +309,7 @@ namespace Com.Enterprisecoding.RobosapienKinect {
         }
 
         private void UninitializeKinectServices() {
-            appendLogEntry("Kinect [Bağlı değil]");
+            appendLogEntry("Kinect [Not Connected]");
 
             kinectSensor.SkeletonFrameReady -= kinectSensor_SkeletonFrameReady;
             
@@ -342,11 +342,11 @@ namespace Com.Enterprisecoding.RobosapienKinect {
         private void Start() {
             var audioSource = kinectSensor.AudioSource;
             audioSource.BeamAngleMode = BeamAngleMode.Adaptive;
-            var kinectStream = audioSource.Start();
+            var kinectStream = audioSource.Start() ;
             speechRecognizer.SetInputToAudioStream(kinectStream, new SpeechAudioFormatInfo(EncodingFormat.Pcm, 16000, 16, 1, 32000, 2, null));
             speechRecognizer.RecognizeAsync(RecognizeMode.Multiple);
 
-            appendLogEntry("Kinect [Ses tanıma açık]");
+            appendLogEntry("Kinect [Voice Recognition On]");
             microphoneInitializing.Stop();
         }
 
@@ -406,14 +406,14 @@ Ensure you have the Microsoft Speech SDK installed and configured.",
             speaking.Stop();
             speaking.Begin();
 
-            appendLogEntry(" [Konuşma Algılandı]");
+            appendLogEntry(" [Speech Detected]");
         }
 
         private void sre_SpeechRecognitionRejected(object sender, SpeechRecognitionRejectedEventArgs e) {
             speakNotRecognised.Stop();
             speakNotRecognised.Begin();
 
-            appendLogEntry(" [Komut Reddedildi]");
+            appendLogEntry(" [Command Rejected]");
         }
 
         private void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e) {
@@ -423,7 +423,7 @@ Ensure you have the Microsoft Speech SDK installed and configured.",
 
             if (command == "ROBO") {
                 roboAppear.Begin();
-                appendLogEntry("Komut [ROBO]");
+                appendLogEntry("Command [ROBO]");
                 executeCommand = true;
                 commandTimeoutTimer.Start();
                 return;
@@ -436,7 +436,7 @@ Ensure you have the Microsoft Speech SDK installed and configured.",
                 roboDisappear.Begin();
             }
 
-            appendLogEntry("Komut [" + command + "]");
+            appendLogEntry("Command [" + command + "]");
 
             executeCommand = false;
             voiceCommands[command].Execute();
