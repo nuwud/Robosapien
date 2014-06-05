@@ -1,6 +1,6 @@
 ﻿namespace Com.Enterprisecoding.RobosapienKinect.VoiceCommands {
     internal sealed class DoNotFollowMeCommand: VoiceCommandBase {
-        public const string COMMAND_NAME = "do not fellow me";
+        public const string COMMAND_NAME = "do not follow me";
 
         public DoNotFollowMeCommand() : base(COMMAND_NAME) { }
 
